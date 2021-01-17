@@ -69,17 +69,14 @@ class _RatingsFilterState extends State<RatingsFilter> {
                   children: List.generate(4, (index) {
                     return GestureDetector(
                       onTap: () {
-                        if (int.parse(range['start']) != (index + 1)) {
-                          setState(() {
-                            range = {
-                              'start': (index + 1).toString(),
-                              'end': '5',
-                            };
-                            widget.searchWidget.setValue(range);
-                          });
-                          widget.callback('ratings-data', range);
-                          // widget.searchWidget.triggerCustomQuery();
-                        }
+                        setState(() {
+                          range = {
+                            'start': (index + 1).toString(),
+                            'end': '5',
+                          };
+                          widget.searchWidget.setValue(range);
+                        });
+                        widget.callback('ratings-data', range);
                       },
                       child: Container(
                         decoration: new BoxDecoration(

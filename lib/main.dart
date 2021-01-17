@@ -212,7 +212,7 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                   child: Column(
                     children: [
-                      SelectedFilters(activeWidgets),
+                      SelectedFilters(activeWidgets, setPanelState),
                       Container(
                         height: panelState['author-filter'] ? 350 : 60,
                         child: SearchWidgetConnector(
@@ -253,9 +253,9 @@ class _HomePageState extends State<HomePage> {
                           value: Map<String, String>(),
                           builder: (context, searchWidget) {
                             // Call searchWidget's query at first time
-                            if (searchWidget.query == null) {
-                              searchWidget.triggerDefaultQuery();
-                            }
+                            // if (searchWidget.query == null) {
+                            //   searchWidget.triggerDefaultQuery();
+                            // }
                             return PublicationYearFilter(
                                 searchWidget,
                                 setPanelState,
@@ -278,9 +278,9 @@ class _HomePageState extends State<HomePage> {
                           value: Map<String, String>(),
                           builder: (context, searchWidget) {
                             // Call searchWidget's query at first time
-                            if (searchWidget.query == null) {
-                              searchWidget.triggerDefaultQuery();
-                            }
+                            // if (searchWidget.query == null) {
+                            //   searchWidget.triggerDefaultQuery();
+                            // }
                             return RatingsFilter(
                                 searchWidget,
                                 setPanelState,

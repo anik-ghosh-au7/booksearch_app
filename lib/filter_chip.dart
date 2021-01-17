@@ -1,17 +1,28 @@
 import 'package:flutter/material.dart';
 
-class filterChipWidget extends StatefulWidget {
+typedef void RemoveFiltersCb(String key, dynamic value);
+
+class FilterChipWidget extends StatefulWidget {
   final String chipName;
   final String chipType;
+  final chipValue;
+  final RemoveFiltersCb removeFiltersCb;
+  final bool selected;
 
-  filterChipWidget({Key key, @required this.chipName, @required this.chipType})
-      : super(key: key);
+  FilterChipWidget({
+    Key key,
+    @required this.chipName,
+    @required this.chipType,
+    @required this.chipValue,
+    this.removeFiltersCb,
+    this.selected,
+  }) : super(key: key);
 
   @override
-  _filterChipWidgetState createState() => _filterChipWidgetState();
+  _FilterChipWidgetState createState() => _FilterChipWidgetState();
 }
 
-class _filterChipWidgetState extends State<filterChipWidget> {
+class _FilterChipWidgetState extends State<FilterChipWidget> {
   var _isSelected = false;
 
   Icon getIcon(String chipType) {
@@ -42,7 +53,14 @@ class _filterChipWidgetState extends State<filterChipWidget> {
   }
 
   @override
+  void initState() {
+    _isSelected = widget.selected;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    _isSelected = widget.selected;
     return FilterChip(
       showCheckmark: false,
       avatar: _isSelected
@@ -63,6 +81,15 @@ class _filterChipWidgetState extends State<filterChipWidget> {
         setState(() {
           _isSelected = isSelected;
         });
+        if (widget.chipType == 'author-filter') {
+          widget.removeFiltersCb(widget.chipType, widget.chipValue);
+        } else {
+          var range = {
+            'start': widget.chipValue['start'],
+            'end': widget.chipValue['end'],
+          };
+          widget.removeFiltersCb(widget.chipType, range);
+        }
       },
       selectedColor: Colors.redAccent[100],
     );
