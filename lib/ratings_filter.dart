@@ -4,14 +4,16 @@ import 'star_display.dart';
 import 'package:flutter/material.dart';
 import 'package:searchbase/searchbase.dart';
 
-typedef void SetStateCb(String id, bool status);
+typedef void SetStateCb(String id, data);
 
 class RatingsFilter extends StatefulWidget {
   final SearchWidget searchWidget;
   final SetStateCb callback;
   final bool panelState;
+  final Map panelData;
 
-  const RatingsFilter(this.searchWidget, this.callback, this.panelState);
+  const RatingsFilter(
+      this.searchWidget, this.callback, this.panelState, this.panelData);
 
   @override
   _RatingsFilterState createState() => _RatingsFilterState();
@@ -75,6 +77,7 @@ class _RatingsFilterState extends State<RatingsFilter> {
                             };
                             widget.searchWidget.setValue(range);
                           });
+                          widget.callback('ratings-data', range);
                           // widget.searchWidget.triggerCustomQuery();
                         }
                       },

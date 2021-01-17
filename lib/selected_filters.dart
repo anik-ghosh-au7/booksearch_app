@@ -14,21 +14,14 @@ class _SelectedFiltersState extends State<SelectedFilters> {
   List selectedFilters;
 
   // @override
-  // void initState() {
-  //   super.initState();
-  //   selectedFilters = [];
+  // void didUpdateWidget(SelectedFilters oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
+  //   if (identical(oldWidget.activeWidgets, widget.activeWidgets)) {
+  //     print('SelectedFilters changed');
+  //   }
   // }
 
-  @override
-  void didUpdateWidget(SelectedFilters oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (identical(oldWidget.activeWidgets, widget.activeWidgets)) {
-      print('SelectedFilters changed');
-    }
-  }
-
   void setSelectedFilters() {
-    print('selected filters called');
     selectedFilters = [];
     if (widget.activeWidgets['author-filter'] != null) {
       widget.activeWidgets['author-filter'].componentQuery['value']
@@ -70,7 +63,6 @@ class _SelectedFiltersState extends State<SelectedFilters> {
         });
       });
     }
-    print('selected filters ==>>${selectedFilters}');
   }
 
   @override

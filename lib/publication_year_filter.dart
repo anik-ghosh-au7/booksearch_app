@@ -2,14 +2,16 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:searchbase/searchbase.dart';
 
-typedef void SetStateCb(String id, bool status);
+typedef void SetStateCb(String id, data);
 
 class PublicationYearFilter extends StatefulWidget {
   final SearchWidget searchWidget;
   final SetStateCb callback;
   final bool panelState;
+  final Map panelData;
 
-  PublicationYearFilter(this.searchWidget, this.callback, this.panelState);
+  PublicationYearFilter(
+      this.searchWidget, this.callback, this.panelState, this.panelData);
 
   @override
   _PublicationYearFilterState createState() => _PublicationYearFilterState();
@@ -104,7 +106,12 @@ class _PublicationYearFilterState extends State<PublicationYearFilter> {
                           "end": _currentRangeValues.end.round().toString(),
                         });
                       });
-                      // widget.searchWidget.triggerCustomQuery();
+                      widget.callback('publication-year-data', {
+                        "start": _currentRangeValues.start
+                            .round()
+                            .toString(), // optional
+                        "end": _currentRangeValues.end.round().toString(),
+                      });
                     },
                   ),
                 ),

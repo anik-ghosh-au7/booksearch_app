@@ -60,8 +60,11 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     panelState = {
       'author-filter': false,
+      'author-data': [],
       'ratings-filter': false,
+      'ratings-data': {},
       'publication-year-filter': false,
+      'publication-year-data': {},
     };
     searchWidgetState = {
       'author-filter': SearchWidget,
@@ -111,6 +114,27 @@ class _HomePageState extends State<HomePage> {
           });
           break;
         }
+      case 'author-data':
+        {
+          setState(() {
+            panelState['author-data'] = value;
+          });
+          break;
+        }
+      case 'ratings-data':
+        {
+          setState(() {
+            panelState['ratings-data'] = value;
+          });
+          break;
+        }
+      case 'publication-year-data':
+        {
+          setState(() {
+            panelState['publication-year-data'] = value;
+          });
+          break;
+        }
     }
   }
 
@@ -125,7 +149,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    print('building main');
     activeWidgets = SearchBaseProvider.of(context).getActiveWidgets();
     setSearchWidgetState(activeWidgets);
     return MaterialApp(
@@ -207,8 +230,11 @@ class _HomePageState extends State<HomePage> {
                             if (searchWidget.query == null) {
                               searchWidget.triggerDefaultQuery();
                             }
-                            return AuthorFilter(searchWidget, setPanelState,
-                                panelState['author-filter']);
+                            return AuthorFilter(
+                                searchWidget,
+                                setPanelState,
+                                panelState['author-filter'],
+                                panelState['author-data']);
                           },
                           // Avoid fetching query for each open/close action instead call it manually
                           triggerQueryOnInit: false,
@@ -233,7 +259,8 @@ class _HomePageState extends State<HomePage> {
                             return PublicationYearFilter(
                                 searchWidget,
                                 setPanelState,
-                                panelState['publication-year-filter']);
+                                panelState['publication-year-filter'],
+                                panelState['publication-year-data']);
                           },
                           // Avoid fetching query for each open/close action instead call it manually
                           triggerQueryOnInit: false,
@@ -254,8 +281,11 @@ class _HomePageState extends State<HomePage> {
                             if (searchWidget.query == null) {
                               searchWidget.triggerDefaultQuery();
                             }
-                            return RatingsFilter(searchWidget, setPanelState,
-                                panelState['ratings-filter']);
+                            return RatingsFilter(
+                                searchWidget,
+                                setPanelState,
+                                panelState['ratings-filter'],
+                                panelState['ratings-data']);
                           },
                           // Avoid fetching query for each open/close action instead call it manually
                           triggerQueryOnInit: false,

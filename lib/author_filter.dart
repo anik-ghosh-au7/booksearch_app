@@ -35,14 +35,16 @@ class FilterHeader extends PreferredSize {
   }
 }
 
-typedef void SetStateCb(String id, bool status);
+typedef void SetStateCb(String id, data);
 
 class AuthorFilter extends StatefulWidget {
   final SearchWidget searchWidget;
   final SetStateCb callback;
   final bool panelState;
+  final List panelData;
 
-  AuthorFilter(this.searchWidget, this.callback, this.panelState);
+  AuthorFilter(
+      this.searchWidget, this.callback, this.panelState, this.panelData);
 
   @override
   _AuthorFilterState createState() => _AuthorFilterState();
@@ -63,7 +65,6 @@ class _AuthorFilterState extends State<AuthorFilter> {
     if (!widget.panelState) {
       _collapse();
     }
-    print('rebuilding author-filter');
     return widget.searchWidget.requestPending
         ? Center(child: CircularProgressIndicator())
         : ExpansionTile(
@@ -119,6 +120,7 @@ class _AuthorFilterState extends State<AuthorFilter> {
                                 values.add(bucket['_key']);
                               }
                               widget.searchWidget.setValue(values);
+                              widget.callback('author-data', values);
                               // widget.searchWidget.triggerCustomQuery();
                             },
                           ),
