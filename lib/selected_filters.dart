@@ -170,99 +170,106 @@ class _SelectedFiltersState extends State<SelectedFilters> {
   @override
   Widget build(BuildContext context) {
     this.setSelectedFilters();
-    return Container(
-      height: 240,
-      child: Column(
-        children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 0, 10),
-              child: RichText(
-                text: TextSpan(
-                  text: 'Selected Filters',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.black54,
-                    fontWeight: FontWeight.bold,
+    return Visibility(
+      visible: selectedFilters.length > 0,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 10),
+        child: Container(
+          height: 240,
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 0, 10),
+                  child: RichText(
+                    text: TextSpan(
+                      text: 'Selected Filters',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black54,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
-          SizedBox(
-            height: 206,
-            width: 300,
-            child: Stack(
-              children: [
-                SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 0, 5, 0),
-                    child: Wrap(
-                      spacing: 1.0,
-                      runSpacing: 1.0,
-                      children: selectedFilters
-                          .map(
-                            (element) => FilterChipWidget(
-                              chipName: element['data'],
-                              chipType: element['key'],
-                              chipValue: element['value'],
-                              removeFiltersCb: setToBeRemovedFilters,
-                              selected: (() {
-                                var flag = false;
-                                toBeRemovedFilters.forEach((filter) {
-                                  if (filter['key'] == element['key']) {
-                                    if (filter['key'] == 'author-filter' &&
-                                        filter['value'] == element['value']) {
-                                      flag = true;
-                                    }
-                                    if (filter['key'] == 'ratings-filter' ||
-                                        filter['key'] ==
-                                            'publication-year-filter') {
-                                      if (filter['value']['start'] ==
-                                              element['value']['start'] &&
-                                          filter['value']['end'] ==
-                                              element['value']['end']) {
-                                        flag = true;
+              SizedBox(
+                height: 206,
+                width: 300,
+                child: Stack(
+                  children: [
+                    SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 0, 5, 0),
+                        child: Wrap(
+                          spacing: 1.0,
+                          runSpacing: 1.0,
+                          children: selectedFilters
+                              .map(
+                                (element) => FilterChipWidget(
+                                  chipName: element['data'],
+                                  chipType: element['key'],
+                                  chipValue: element['value'],
+                                  removeFiltersCb: setToBeRemovedFilters,
+                                  selected: (() {
+                                    var flag = false;
+                                    toBeRemovedFilters.forEach((filter) {
+                                      if (filter['key'] == element['key']) {
+                                        if (filter['key'] == 'author-filter' &&
+                                            filter['value'] ==
+                                                element['value']) {
+                                          flag = true;
+                                        }
+                                        if (filter['key'] == 'ratings-filter' ||
+                                            filter['key'] ==
+                                                'publication-year-filter') {
+                                          if (filter['value']['start'] ==
+                                                  element['value']['start'] &&
+                                              filter['value']['end'] ==
+                                                  element['value']['end']) {
+                                            flag = true;
+                                          }
+                                        }
                                       }
-                                    }
-                                  }
-                                });
-                                return flag;
-                              })(),
-                            ),
-                          )
-                          .toList(),
-                    ),
-                  ),
-                ),
-                Visibility(
-                  visible: toBeRemovedFilters.length > 0,
-                  child: Positioned(
-                    right: 0,
-                    bottom: 0,
-                    child: RawMaterialButton(
-                      onPressed: () {
-                        removeFilters();
-                      },
-                      elevation: 5.0,
-                      fillColor: Colors.blue.withOpacity(0.5),
-                      child: Icon(
-                        Icons.delete_forever_rounded,
-                        size: 25.0,
-                        color: Colors.white,
+                                    });
+                                    return flag;
+                                  })(),
+                                ),
+                              )
+                              .toList(),
+                        ),
                       ),
-                      padding: EdgeInsets.all(10.0),
-                      shape: CircleBorder(),
-                      splashColor: Colors.redAccent[100],
                     ),
-                  ),
+                    Visibility(
+                      visible: toBeRemovedFilters.length > 0,
+                      child: Positioned(
+                        right: 0,
+                        bottom: 0,
+                        child: RawMaterialButton(
+                          onPressed: () {
+                            removeFilters();
+                          },
+                          elevation: 5.0,
+                          fillColor: Colors.blue.withOpacity(0.5),
+                          child: Icon(
+                            Icons.delete_forever_rounded,
+                            size: 25.0,
+                            color: Colors.white,
+                          ),
+                          padding: EdgeInsets.all(10.0),
+                          shape: CircleBorder(),
+                          splashColor: Colors.redAccent[100],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

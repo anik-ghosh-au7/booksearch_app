@@ -205,102 +205,122 @@ class _HomePageState extends State<HomePage> {
         ),
         // A custom UI widget to render a list of authors
         drawer: Drawer(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
-            child: Column(
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      SelectedFilters(activeWidgets, setPanelState),
-                      Container(
-                        height: panelState['author-filter'] ? 350 : 60,
-                        child: SearchWidgetConnector(
-                          id: 'author-filter',
-                          type: QueryType.term,
-                          dataField: "authors.keyword",
-                          size: 5,
-                          // Initialize with default value
-                          value: List<String>(),
-                          react: {
-                            'and': ['search-widget']
-                          },
-                          builder: (context, searchWidget) {
-                            // Call searchWidget's query at first time
-                            if (searchWidget.query == null) {
-                              searchWidget.triggerDefaultQuery();
-                            }
-                            return AuthorFilter(
-                                searchWidget,
-                                setPanelState,
-                                panelState['author-filter'],
-                                panelState['author-data']);
-                          },
-                          // Avoid fetching query for each open/close action instead call it manually
-                          triggerQueryOnInit: false,
-                          // Do not remove the search widget's instance after unmount
-                          destroyOnDispose: false,
+          child: Column(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    Container(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Container(
+                          color: Colors.black,
+                          height: 100,
+                          width: double.infinity,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 50, 0, 0),
+                            child: RichText(
+                              text: TextSpan(
+                                text: 'FILTERS',
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  color: Colors.white,
+                                  letterSpacing: 10,
+                                  // fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                      Container(
-                        height:
-                            panelState['publication-year-filter'] ? 200 : 60,
-                        child: SearchWidgetConnector(
-                          id: 'publication-year-filter',
-                          type: QueryType.range,
-                          dataField: "original_publication_year",
-                          // Initialize with default value
-                          value: Map<String, String>(),
-                          builder: (context, searchWidget) {
-                            // Call searchWidget's query at first time
-                            // if (searchWidget.query == null) {
-                            //   searchWidget.triggerDefaultQuery();
-                            // }
-                            return PublicationYearFilter(
-                                searchWidget,
-                                setPanelState,
-                                panelState['publication-year-filter'],
-                                panelState['publication-year-data']);
-                          },
-                          // Avoid fetching query for each open/close action instead call it manually
-                          triggerQueryOnInit: false,
-                          // Do not remove the search widget's instance after unmount
-                          destroyOnDispose: false,
-                        ),
+                    ),
+                    SelectedFilters(activeWidgets, setPanelState),
+                    Container(
+                      height: panelState['author-filter'] ? 350 : 60,
+                      child: SearchWidgetConnector(
+                        id: 'author-filter',
+                        type: QueryType.term,
+                        dataField: "authors.keyword",
+                        size: 5,
+                        // Initialize with default value
+                        value: List<String>(),
+                        react: {
+                          'and': ['search-widget']
+                        },
+                        builder: (context, searchWidget) {
+                          // Call searchWidget's query at first time
+                          if (searchWidget.query == null) {
+                            searchWidget.triggerDefaultQuery();
+                          }
+                          return AuthorFilter(
+                              searchWidget,
+                              setPanelState,
+                              panelState['author-filter'],
+                              panelState['author-data']);
+                        },
+                        // Avoid fetching query for each open/close action instead call it manually
+                        triggerQueryOnInit: false,
+                        // Do not remove the search widget's instance after unmount
+                        destroyOnDispose: false,
                       ),
-                      Container(
-                        height: panelState['ratings-filter'] ? 250 : 60,
-                        child: SearchWidgetConnector(
-                          id: 'ratings-filter',
-                          type: QueryType.range,
-                          dataField: "average_rating",
-                          // Initialize with default value
-                          value: Map<String, String>(),
-                          builder: (context, searchWidget) {
-                            // Call searchWidget's query at first time
-                            // if (searchWidget.query == null) {
-                            //   searchWidget.triggerDefaultQuery();
-                            // }
-                            return RatingsFilter(
-                                searchWidget,
-                                setPanelState,
-                                panelState['ratings-filter'],
-                                panelState['ratings-data']);
-                          },
-                          // Avoid fetching query for each open/close action instead call it manually
-                          triggerQueryOnInit: false,
-                          // Do not remove the search widget's instance after unmount
-                          destroyOnDispose: false,
-                        ),
+                    ),
+                    Container(
+                      height: panelState['publication-year-filter'] ? 200 : 60,
+                      child: SearchWidgetConnector(
+                        id: 'publication-year-filter',
+                        type: QueryType.range,
+                        dataField: "original_publication_year",
+                        // Initialize with default value
+                        value: Map<String, String>(),
+                        builder: (context, searchWidget) {
+                          // Call searchWidget's query at first time
+                          // if (searchWidget.query == null) {
+                          //   searchWidget.triggerDefaultQuery();
+                          // }
+                          return PublicationYearFilter(
+                              searchWidget,
+                              setPanelState,
+                              panelState['publication-year-filter'],
+                              panelState['publication-year-data']);
+                        },
+                        // Avoid fetching query for each open/close action instead call it manually
+                        triggerQueryOnInit: false,
+                        // Do not remove the search widget's instance after unmount
+                        destroyOnDispose: false,
                       ),
-                    ],
-                  ),
+                    ),
+                    Container(
+                      height: panelState['ratings-filter'] ? 250 : 60,
+                      child: SearchWidgetConnector(
+                        id: 'ratings-filter',
+                        type: QueryType.range,
+                        dataField: "average_rating",
+                        // Initialize with default value
+                        value: Map<String, String>(),
+                        builder: (context, searchWidget) {
+                          // Call searchWidget's query at first time
+                          // if (searchWidget.query == null) {
+                          //   searchWidget.triggerDefaultQuery();
+                          // }
+                          return RatingsFilter(
+                              searchWidget,
+                              setPanelState,
+                              panelState['ratings-filter'],
+                              panelState['ratings-data']);
+                        },
+                        // Avoid fetching query for each open/close action instead call it manually
+                        triggerQueryOnInit: false,
+                        // Do not remove the search widget's instance after unmount
+                        destroyOnDispose: false,
+                      ),
+                    ),
+                  ],
                 ),
-                Container(
-                  child: DrawerButtons(searchWidgetState),
-                ),
-              ],
-            ),
+              ),
+              Container(
+                child: DrawerButtons(searchWidgetState),
+              ),
+            ],
           ),
         ),
       ),
