@@ -8,11 +8,10 @@ typedef void SetStateCb(String id, bool status);
 
 class RatingsFilter extends StatefulWidget {
   final SearchWidget searchWidget;
-  // ignore: non_constant_identifier_names
-  final SetStateCb Callback;
+  final SetStateCb callback;
   final bool panelState;
 
-  const RatingsFilter(this.searchWidget, this.Callback, this.panelState);
+  const RatingsFilter(this.searchWidget, this.callback, this.panelState);
 
   @override
   _RatingsFilterState createState() => _RatingsFilterState();
@@ -49,7 +48,7 @@ class _RatingsFilterState extends State<RatingsFilter> {
             key: new Key(_key.toString()),
             initiallyExpanded: widget.panelState,
             onExpansionChanged: ((newState) {
-              widget.Callback('ratings-filter', newState);
+              widget.callback('ratings-filter', newState);
             }),
             title: RichText(
               text: TextSpan(

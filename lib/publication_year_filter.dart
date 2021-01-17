@@ -6,11 +6,10 @@ typedef void SetStateCb(String id, bool status);
 
 class PublicationYearFilter extends StatefulWidget {
   final SearchWidget searchWidget;
-  // ignore: non_constant_identifier_names
-  final SetStateCb Callback;
+  final SetStateCb callback;
   final bool panelState;
 
-  PublicationYearFilter(this.searchWidget, this.Callback, this.panelState);
+  PublicationYearFilter(this.searchWidget, this.callback, this.panelState);
 
   @override
   _PublicationYearFilterState createState() => _PublicationYearFilterState();
@@ -55,7 +54,7 @@ class _PublicationYearFilterState extends State<PublicationYearFilter> {
             key: new Key(_key.toString()),
             initiallyExpanded: widget.panelState,
             onExpansionChanged: ((newState) {
-              widget.Callback('publication-year-filter', newState);
+              widget.callback('publication-year-filter', newState);
             }),
             title: RichText(
               text: TextSpan(

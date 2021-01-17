@@ -39,11 +39,10 @@ typedef void SetStateCb(String id, bool status);
 
 class AuthorFilter extends StatefulWidget {
   final SearchWidget searchWidget;
-  // ignore: non_constant_identifier_names
-  final SetStateCb Callback;
+  final SetStateCb callback;
   final bool panelState;
 
-  AuthorFilter(this.searchWidget, this.Callback, this.panelState);
+  AuthorFilter(this.searchWidget, this.callback, this.panelState);
 
   @override
   _AuthorFilterState createState() => _AuthorFilterState();
@@ -71,7 +70,7 @@ class _AuthorFilterState extends State<AuthorFilter> {
             key: new Key(_key.toString()),
             initiallyExpanded: widget.panelState,
             onExpansionChanged: ((newState) {
-              widget.Callback('author-filter', newState);
+              widget.callback('author-filter', newState);
             }),
             title: RichText(
               text: TextSpan(
