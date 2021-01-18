@@ -234,7 +234,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
-                    SelectedFilters(activeWidgets, setPanelState),
+                    // SelectedFilters(activeWidgets, setPanelState),
                     Container(
                       height: panelState['author-filter'] ? 350 : 60,
                       child: SearchWidgetConnector(

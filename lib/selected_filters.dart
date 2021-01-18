@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_searchbox/flutter_searchbox.dart';
 
 import 'filter_chip.dart';
 
-typedef void SetStateCb(String id, data);
-
 class SelectedFilters extends StatefulWidget {
-  final Map activeWidgets;
-  final SetStateCb callback;
-  SelectedFilters(this.activeWidgets, this.callback);
-
   @override
   _SelectedFiltersState createState() => _SelectedFiltersState();
 }
@@ -16,6 +11,7 @@ class SelectedFilters extends StatefulWidget {
 class _SelectedFiltersState extends State<SelectedFilters> {
   List selectedFilters;
   List toBeRemovedFilters;
+  Map activeWidgets;
 
   @override
   void initState() {
@@ -34,9 +30,9 @@ class _SelectedFiltersState extends State<SelectedFilters> {
 
   void setSelectedFilters() {
     selectedFilters = [];
-    if (widget.activeWidgets['author-filter'] != null) {
-      widget.activeWidgets['author-filter'].componentQuery['value']
-          .forEach((element) {
+    activeWidgets = SearchBaseProvider.of(context).getActiveWidgets();
+    if (activeWidgets['author-filter'] != null) {
+      activeWidgets['author-filter'].componentQuery['value'].forEach((element) {
         setState(() {
           selectedFilters.add({
             'key': 'author-filter',
@@ -46,31 +42,29 @@ class _SelectedFiltersState extends State<SelectedFilters> {
         });
       });
     }
-    if (widget.activeWidgets['publication-year-filter'] != null &&
-        widget.activeWidgets['publication-year-filter'].componentQuery['value']
+    if (activeWidgets['publication-year-filter'] != null &&
+        activeWidgets['publication-year-filter'].componentQuery['value']
                 ['start'] !=
             null) {
       setState(() {
         selectedFilters.add({
           'key': 'publication-year-filter',
-          'value': widget
-              .activeWidgets['publication-year-filter'].componentQuery['value'],
+          'value':
+              activeWidgets['publication-year-filter'].componentQuery['value'],
           'data':
-              '${widget.activeWidgets['publication-year-filter'].componentQuery['value']['start']} - ${widget.activeWidgets['publication-year-filter'].componentQuery['value']['end']}',
+              '${activeWidgets['publication-year-filter'].componentQuery['value']['start']} - ${activeWidgets['publication-year-filter'].componentQuery['value']['end']}',
         });
       });
     }
-    if (widget.activeWidgets['ratings-filter'] != null &&
-        widget.activeWidgets['ratings-filter'].componentQuery['value']
-                ['start'] !=
+    if (activeWidgets['ratings-filter'] != null &&
+        activeWidgets['ratings-filter'].componentQuery['value']['start'] !=
             null) {
       setState(() {
         selectedFilters.add({
           'key': 'ratings-filter',
-          'value':
-              widget.activeWidgets['ratings-filter'].componentQuery['value'],
+          'value': activeWidgets['ratings-filter'].componentQuery['value'],
           'data':
-              '${widget.activeWidgets['ratings-filter'].componentQuery['value']['start']} - ${widget.activeWidgets['ratings-filter'].componentQuery['value']['end']}',
+              '${activeWidgets['ratings-filter'].componentQuery['value']['start']} - ${activeWidgets['ratings-filter'].componentQuery['value']['end']}',
         });
       });
     }
@@ -147,19 +141,21 @@ class _SelectedFiltersState extends State<SelectedFilters> {
   void removeFilters() {
     toBeRemovedFilters.forEach((filter) {
       if (filter['key'] == 'author-filter') {
-        final List<String> values =
-            widget.activeWidgets['author-filter'].value == null
-                ? []
-                : widget.activeWidgets['author-filter'].value;
+        final List<String> values = activeWidgets['author-filter'].value == null
+            ? []
+            : activeWidgets['author-filter'].value;
         values.remove(filter['value']);
-        widget.activeWidgets['author-filter'].setValue(values);
-        widget.callback('author-data', values);
+        activeWidgets['author-filter'].setValue(values);
+        activeWidgets['author-filter'].triggerCustomQuery();
+        // widget.callback('author-data', values);
       } else if (filter['key'] == 'ratings-filter') {
-        widget.activeWidgets['ratings-filter'].setValue({});
-        widget.callback(filter['ratings-data'], {});
+        activeWidgets['ratings-filter'].setValue({});
+        activeWidgets['ratings-filter'].triggerCustomQuery();
+        // widget.callback(filter['ratings-data'], {});
       } else if (filter['key'] == 'publication-year-filter') {
-        widget.activeWidgets['publication-year-filter'].setValue({});
-        widget.callback(filter['publication-year-data'], {});
+        activeWidgets['publication-year-filter'].setValue({});
+        activeWidgets['publication-year-filter'].triggerCustomQuery();
+        // widget.callback(filter['publication-year-data'], {});
       }
     });
     setState(() {
@@ -170,105 +166,86 @@ class _SelectedFiltersState extends State<SelectedFilters> {
   @override
   Widget build(BuildContext context) {
     this.setSelectedFilters();
+    print(SearchBaseProvider.of(context).getActiveWidgets());
     return Visibility(
       visible: selectedFilters.length > 0,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 10),
-        child: Container(
-          height: 240,
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 0, 10),
-                  child: RichText(
-                    text: TextSpan(
-                      text: 'Selected Filters',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black54,
-                        fontWeight: FontWeight.bold,
+      child: Container(
+        height: 90,
+        child: Column(
+          children: [
+            SizedBox(
+              height: 90,
+              width: double.infinity,
+              child: Stack(
+                children: [
+                  SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Wrap(
+                        spacing: 5.0,
+                        runSpacing: 1.0,
+                        children: selectedFilters
+                            .map(
+                              (element) => FilterChipWidget(
+                                chipName: element['data'],
+                                chipType: element['key'],
+                                chipValue: element['value'],
+                                removeFiltersCb: setToBeRemovedFilters,
+                                selected: (() {
+                                  var flag = false;
+                                  toBeRemovedFilters.forEach((filter) {
+                                    if (filter['key'] == element['key']) {
+                                      if (filter['key'] == 'author-filter' &&
+                                          filter['value'] == element['value']) {
+                                        flag = true;
+                                      }
+                                      if (filter['key'] == 'ratings-filter' ||
+                                          filter['key'] ==
+                                              'publication-year-filter') {
+                                        if (filter['value']['start'] ==
+                                                element['value']['start'] &&
+                                            filter['value']['end'] ==
+                                                element['value']['end']) {
+                                          flag = true;
+                                        }
+                                      }
+                                    }
+                                  });
+                                  return flag;
+                                })(),
+                              ),
+                            )
+                            .toList(),
                       ),
                     ),
                   ),
-                ),
-              ),
-              SizedBox(
-                height: 206,
-                width: 300,
-                child: Stack(
-                  children: [
-                    SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 0, 5, 0),
-                        child: Wrap(
-                          spacing: 1.0,
-                          runSpacing: 1.0,
-                          children: selectedFilters
-                              .map(
-                                (element) => FilterChipWidget(
-                                  chipName: element['data'],
-                                  chipType: element['key'],
-                                  chipValue: element['value'],
-                                  removeFiltersCb: setToBeRemovedFilters,
-                                  selected: (() {
-                                    var flag = false;
-                                    toBeRemovedFilters.forEach((filter) {
-                                      if (filter['key'] == element['key']) {
-                                        if (filter['key'] == 'author-filter' &&
-                                            filter['value'] ==
-                                                element['value']) {
-                                          flag = true;
-                                        }
-                                        if (filter['key'] == 'ratings-filter' ||
-                                            filter['key'] ==
-                                                'publication-year-filter') {
-                                          if (filter['value']['start'] ==
-                                                  element['value']['start'] &&
-                                              filter['value']['end'] ==
-                                                  element['value']['end']) {
-                                            flag = true;
-                                          }
-                                        }
-                                      }
-                                    });
-                                    return flag;
-                                  })(),
-                                ),
-                              )
-                              .toList(),
+                  Visibility(
+                    visible: toBeRemovedFilters.length > 0,
+                    child: Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: RawMaterialButton(
+                        onPressed: () {
+                          removeFilters();
+                        },
+                        elevation: 5.0,
+                        fillColor: Colors.blue.withOpacity(0.5),
+                        child: Icon(
+                          Icons.delete_forever_rounded,
+                          size: 25.0,
+                          color: Colors.white,
                         ),
+                        padding: EdgeInsets.all(10.0),
+                        shape: CircleBorder(),
+                        splashColor: Colors.redAccent[100],
                       ),
                     ),
-                    Visibility(
-                      visible: toBeRemovedFilters.length > 0,
-                      child: Positioned(
-                        right: 0,
-                        bottom: 0,
-                        child: RawMaterialButton(
-                          onPressed: () {
-                            removeFilters();
-                          },
-                          elevation: 5.0,
-                          fillColor: Colors.blue.withOpacity(0.5),
-                          child: Icon(
-                            Icons.delete_forever_rounded,
-                            size: 25.0,
-                            color: Colors.white,
-                          ),
-                          padding: EdgeInsets.all(10.0),
-                          shape: CircleBorder(),
-                          splashColor: Colors.redAccent[100],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
