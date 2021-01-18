@@ -226,15 +226,16 @@ class _SelectedFiltersState extends State<SelectedFilters> {
                           removeFilters();
                         },
                         elevation: 5.0,
-                        fillColor: Colors.blue.withOpacity(0.5),
-                        child: Icon(
-                          Icons.delete_forever_rounded,
-                          size: 25.0,
-                          color: Colors.white,
+                        fillColor: Theme.of(context).accentColor,
+                        child: IconTheme(
+                          data: Theme.of(context).accentIconTheme,
+                          child: Icon(
+                            Icons.delete_forever_rounded,
+                          ),
                         ),
                         padding: EdgeInsets.all(10.0),
                         shape: CircleBorder(),
-                        splashColor: Colors.redAccent[100],
+                        splashColor: Theme.of(context).splashColor,
                       ),
                     ),
                   ),

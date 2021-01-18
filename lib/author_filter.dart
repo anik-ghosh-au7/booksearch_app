@@ -16,20 +16,18 @@ class FilterHeader extends PreferredSize {
   Widget build(BuildContext context) {
     return Container(
       height: preferredSize.height,
-      // color: Colors.white,
       alignment: Alignment.centerLeft,
       child: child,
       padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: Colors.grey,
+            color: Theme.of(context).shadowColor,
             spreadRadius: 1,
             blurRadius: 1,
             offset: Offset(0, 1),
           ),
         ],
-        color: Colors.white,
       ),
     );
   }
@@ -76,13 +74,9 @@ class _AuthorFilterState extends State<AuthorFilter> {
             title: RichText(
               text: TextSpan(
                   text: 'Select Authors',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: widget.panelState
-                        ? Colors.blue.shade400
-                        : Colors.black54,
-                    fontWeight: FontWeight.bold,
-                  )),
+                  style: widget.panelState
+                      ? Theme.of(context).textTheme.headline1
+                      : Theme.of(context).textTheme.headline2),
             ),
             children: [
               SizedBox(
@@ -92,46 +86,34 @@ class _AuthorFilterState extends State<AuthorFilter> {
                   child: Column(
                     children:
                         widget.searchWidget.aggregationData.data.map((bucket) {
-                      return Column(
-                        children: [
-                          new CheckboxListTile(
-                            controlAffinity: ListTileControlAffinity.leading,
-                            activeColor: Colors.black54,
-                            dense: true,
-                            title: RichText(
-                              text: TextSpan(
-                                text:
-                                    "${bucket['_key']} (${bucket['_doc_count']})",
-                                style: TextStyle(color: Colors.black87),
-                              ),
-                            ),
-                            value: (widget.searchWidget.value == null
-                                    ? []
-                                    : widget.searchWidget.value)
-                                .contains(bucket['_key']),
-                            onChanged: (bool value) {
-                              final List<String> values =
-                                  widget.searchWidget.value == null
-                                      ? []
-                                      : widget.searchWidget.value;
-                              if (values.contains(bucket['_key'])) {
-                                values.remove(bucket['_key']);
-                              } else {
-                                values.add(bucket['_key']);
-                              }
-                              widget.searchWidget.setValue(values);
-                              widget.callback('author-data', values);
-                              // widget.searchWidget.triggerCustomQuery();
-                            },
+                      return new CheckboxListTile(
+                        controlAffinity: ListTileControlAffinity.leading,
+                        activeColor: Theme.of(context).secondaryHeaderColor,
+                        dense: true,
+                        title: RichText(
+                          text: TextSpan(
+                            text: "${bucket['_key']} (${bucket['_doc_count']})",
+                            style: Theme.of(context).textTheme.bodyText1,
                           ),
-                          const Divider(
-                            color: Colors.black,
-                            height: 10,
-                            thickness: 0.1,
-                            indent: 25,
-                            endIndent: 20,
-                          )
-                        ],
+                        ),
+                        value: (widget.searchWidget.value == null
+                                ? []
+                                : widget.searchWidget.value)
+                            .contains(bucket['_key']),
+                        onChanged: (bool value) {
+                          final List<String> values =
+                              widget.searchWidget.value == null
+                                  ? []
+                                  : widget.searchWidget.value;
+                          if (values.contains(bucket['_key'])) {
+                            values.remove(bucket['_key']);
+                          } else {
+                            values.add(bucket['_key']);
+                          }
+                          widget.searchWidget.setValue(values);
+                          widget.callback('author-data', values);
+                          // widget.searchWidget.triggerCustomQuery();
+                        },
                       );
                     }).toList(),
                   ),

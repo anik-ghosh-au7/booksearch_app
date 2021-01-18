@@ -55,13 +55,9 @@ class _RatingsFilterState extends State<RatingsFilter> {
             title: RichText(
               text: TextSpan(
                   text: 'Select Ratings',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: widget.panelState
-                        ? Colors.blue.shade400
-                        : Colors.black54,
-                    fontWeight: FontWeight.bold,
-                  )),
+                  style: widget.panelState
+                      ? Theme.of(context).textTheme.headline1
+                      : Theme.of(context).textTheme.headline2),
             ),
             children: [
               Container(
@@ -81,8 +77,8 @@ class _RatingsFilterState extends State<RatingsFilter> {
                       child: Container(
                         decoration: new BoxDecoration(
                           color: (int.parse(range['start']) == (index + 1))
-                              ? Colors.black12.withOpacity(0.025)
-                              : Colors.white,
+                              ? Theme.of(context).selectedRowColor
+                              : Theme.of(context).primaryColorLight,
                         ),
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(20, 8, 8, 8),
@@ -91,9 +87,7 @@ class _RatingsFilterState extends State<RatingsFilter> {
                               Expanded(
                                 flex: 4,
                                 child: IconTheme(
-                                  data: IconThemeData(
-                                    color: Colors.amber,
-                                  ),
+                                  data: Theme.of(context).iconTheme,
                                   child: StarDisplay(value: index + 1),
                                 ),
                               ),
@@ -106,7 +100,8 @@ class _RatingsFilterState extends State<RatingsFilter> {
                                     text: TextSpan(
                                       text: '(${index + 1} stars or above)',
                                       style: TextStyle(
-                                        color: Colors.black45,
+                                        color: Theme.of(context)
+                                            .secondaryHeaderColor,
                                       ),
                                     ),
                                   ),

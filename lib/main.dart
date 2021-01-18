@@ -7,7 +7,7 @@ import 'author_filter.dart';
 import 'publication_year_filter.dart';
 import 'ratings_filter.dart';
 import 'drawer_buttons.dart';
-import 'selected_filters.dart';
+import 'custom_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Required by FlutterConfig
@@ -34,11 +34,7 @@ class FlutterSearchBoxApp extends StatelessWidget {
       searchbase: SearchBase(index, url, credentials,
           appbaseConfig: AppbaseSettings(recordAnalytics: true)),
       child: MaterialApp(
-        title: "SearchBox Demo",
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
+        theme: CustomTheme().theme,
         home: HomePage(),
       ),
     );
@@ -137,10 +133,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'SearchBox Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+      theme: CustomTheme().theme,
       home: Scaffold(
         // key: _scaffoldKey,
         appBar: AppBar(
@@ -198,20 +191,15 @@ class _HomePageState extends State<HomePage> {
                       child: Align(
                         alignment: Alignment.center,
                         child: Container(
-                          color: Colors.black,
-                          height: 100,
+                          color: Theme.of(context).primaryColorDark,
+                          height: 104,
                           width: double.infinity,
                           child: Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 50, 0, 0),
+                            padding: const EdgeInsets.fromLTRB(16, 55, 0, 0),
                             child: RichText(
                               text: TextSpan(
-                                text: 'FILTERS',
-                                style: TextStyle(
-                                  fontSize: 30,
-                                  color: Colors.white,
-                                  letterSpacing: 10,
-                                  // fontWeight: FontWeight.bold,
-                                ),
+                                text: 'SELECT FILTERS',
+                                style: Theme.of(context).textTheme.headline3,
                               ),
                             ),
                           ),

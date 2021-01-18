@@ -18,7 +18,6 @@ class ResultsWidget extends StatelessWidget {
           child: Align(
             alignment: Alignment.centerLeft,
             child: Container(
-              color: Colors.white,
               height: 20,
               child: Text(
                   '${searchWidget.results.numberOfResults} results found in ${searchWidget.results.time.toString()} ms'),
@@ -47,7 +46,9 @@ class ResultsWidget extends StatelessWidget {
                           margin: const EdgeInsets.all(0.5),
                           padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
                           decoration: new BoxDecoration(
-                              border: Border.all(color: Colors.black26)),
+                              border: Border.all(
+                                  color:
+                                      Theme.of(context).unselectedWidgetColor)),
                           height: 200,
                           child: GestureDetector(
                             onTap: () {
@@ -93,21 +94,19 @@ class ResultsWidget extends StatelessWidget {
                                               title: Tooltip(
                                                 padding: EdgeInsets.all(5),
                                                 height: 35,
-                                                textStyle: TextStyle(
-                                                    fontSize: 15,
-                                                    color: Colors.grey,
-                                                    fontWeight:
-                                                        FontWeight.normal),
+                                                textStyle: Theme.of(context)
+                                                    .textTheme
+                                                    .headline5,
                                                 decoration: BoxDecoration(
                                                   boxShadow: [
                                                     BoxShadow(
-                                                      color: Colors.grey,
+                                                      color: Theme.of(context)
+                                                          .shadowColor,
                                                       spreadRadius: 1,
                                                       blurRadius: 1,
                                                       offset: Offset(0, 1),
                                                     ),
                                                   ],
-                                                  color: Colors.white,
                                                 ),
                                                 message:
                                                     'By: ${searchWidget.results.data[index]["original_title"]}',
@@ -130,21 +129,19 @@ class ResultsWidget extends StatelessWidget {
                                               subtitle: Tooltip(
                                                 padding: EdgeInsets.all(5),
                                                 height: 35,
-                                                textStyle: TextStyle(
-                                                    fontSize: 15,
-                                                    color: Colors.grey,
-                                                    fontWeight:
-                                                        FontWeight.normal),
+                                                textStyle: Theme.of(context)
+                                                    .textTheme
+                                                    .headline5,
                                                 decoration: BoxDecoration(
                                                   boxShadow: [
                                                     BoxShadow(
-                                                      color: Colors.grey,
+                                                      color: Theme.of(context)
+                                                          .shadowColor,
                                                       spreadRadius: 1,
                                                       blurRadius: 1,
                                                       offset: Offset(0, 1),
                                                     ),
                                                   ],
-                                                  color: Colors.white,
                                                 ),
                                                 message:
                                                     'By: ${searchWidget.results.data[index]["authors"]}',
@@ -172,9 +169,8 @@ class ResultsWidget extends StatelessWidget {
                                                     const EdgeInsets.fromLTRB(
                                                         25, 0, 0, 0),
                                                 child: IconTheme(
-                                                  data: IconThemeData(
-                                                    color: Colors.amber,
-                                                  ),
+                                                  data: Theme.of(context)
+                                                      .iconTheme,
                                                   child: StarDisplay(
                                                       value: searchWidget
                                                               .results
@@ -228,10 +224,8 @@ class ResultsWidget extends StatelessWidget {
                                     text: searchWidget.results.data.length > 0
                                         ? "No more results"
                                         : 'No results found',
-                                    style: TextStyle(
-                                        color: Colors.black54,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
+                                    style:
+                                        Theme.of(context).textTheme.headline2,
                                   ),
                                 ),
                               ),

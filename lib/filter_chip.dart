@@ -31,21 +31,21 @@ class _FilterChipWidgetState extends State<FilterChipWidget> {
         {
           return Icon(
             Icons.account_circle_outlined,
-            color: Colors.black54,
+            color: Theme.of(context).secondaryHeaderColor,
           );
         }
       case 'ratings-filter':
         {
           return Icon(
             Icons.star_border_outlined,
-            color: Colors.black54,
+            color: Theme.of(context).secondaryHeaderColor,
           );
         }
       case 'publication-year-filter':
         {
           return Icon(
             Icons.date_range_outlined,
-            color: Colors.black54,
+            color: Theme.of(context).secondaryHeaderColor,
           );
         }
     }
@@ -70,13 +70,12 @@ class _FilterChipWidgetState extends State<FilterChipWidget> {
             )
           : getIcon(widget.chipType),
       label: Text(widget.chipName),
-      labelStyle: TextStyle(
-          color: Colors.black54, fontSize: 12.0, fontWeight: FontWeight.bold),
+      labelStyle: Theme.of(context).textTheme.headline6,
       selected: _isSelected,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
       ),
-      backgroundColor: Colors.black12,
+      backgroundColor: Theme.of(context).unselectedWidgetColor,
       onSelected: (isSelected) {
         setState(() {
           _isSelected = isSelected;
@@ -91,7 +90,7 @@ class _FilterChipWidgetState extends State<FilterChipWidget> {
           widget.removeFiltersCb(widget.chipType, range);
         }
       },
-      selectedColor: Colors.redAccent[100],
+      selectedColor: Theme.of(context).indicatorColor,
     );
   }
 }

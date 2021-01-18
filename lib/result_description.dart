@@ -39,34 +39,31 @@ class _HomeState extends State<Home> {
       child: new Center(
           child: info.isEmpty
               ? new CircularProgressIndicator()
-              : SizedBox(
-                  height: 400,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: Container(
-                        child: RichText(
-                          textAlign: TextAlign.justify,
-                          text: TextSpan(
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.black54,
-                              letterSpacing: 0.8,
+              : Visibility(
+                  visible: (info['Abstract'].length > 0 ||
+                      info['AbstractText'].length > 0),
+                  child: SizedBox(
+                    height: 400,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Container(
+                          child: RichText(
+                            textAlign: TextAlign.justify,
+                            text: TextSpan(
+                              style: Theme.of(context).textTheme.bodyText2,
+                              children: <TextSpan>[
+                                new TextSpan(
+                                    text: 'By DuckDuckGo API: ',
+                                    style: new TextStyle(
+                                        fontWeight: FontWeight.bold)),
+                                new TextSpan(
+                                    text: info['Abstract'].length > 0
+                                        ? info['Abstract']
+                                        : info['AbstractText']),
+                              ],
                             ),
-                            children: <TextSpan>[
-                              new TextSpan(
-                                  text: 'By DuckDuckGo API: ',
-                                  style: new TextStyle(
-                                      fontWeight: FontWeight.bold)),
-                              new TextSpan(
-                                text: info['Abstract'].length > 0
-                                    ? info['Abstract']
-                                    : (info['AbstractText'].length > 0
-                                        ? info['AbstractText']
-                                        : 'No Description found'),
-                              ),
-                            ],
                           ),
                         ),
                       ),

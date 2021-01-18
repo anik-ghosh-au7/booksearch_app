@@ -17,25 +17,19 @@ class _DrawerButtonsState extends State<DrawerButtons> {
         child: Align(
           alignment: Alignment.center,
           child: Container(
-            color: Colors.black,
+            color: Theme.of(context).primaryColorDark,
             height: 70,
             child: Center(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
-                    flex: 6,
+                    flex: 8,
                     child: RaisedButton(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 10.0, vertical: 23.0),
-                      color: Colors.black,
+                      color: Theme.of(context).primaryColorDark,
                       child: Text(
                         'Apply',
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.w300,
-                          color: Colors.white,
-                        ),
+                        style: Theme.of(context).textTheme.headline3,
                       ),
                       onPressed: () {
                         searchWidgetState['author-filter'].triggerCustomQuery();
@@ -48,33 +42,24 @@ class _DrawerButtonsState extends State<DrawerButtons> {
                     ),
                   ),
                   Expanded(
-                    flex: 2,
                     child: Align(
                       alignment: Alignment.center,
                       child: RichText(
                         text: TextSpan(
                           text: '|',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 50,
-                              fontWeight: FontWeight.w100),
+                          style: Theme.of(context).textTheme.headline3.copyWith(
+                              fontSize: 50, fontWeight: FontWeight.w200),
                         ),
                       ),
                     ),
                   ),
                   Expanded(
-                    flex: 6,
+                    flex: 8,
                     child: RaisedButton(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 10.0, vertical: 23.0),
-                      color: Colors.black,
+                      color: Theme.of(context).primaryColorDark,
                       child: Text(
                         'Close',
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.w300,
-                          color: Colors.white,
-                        ),
+                        style: Theme.of(context).textTheme.headline3,
                       ),
                       onPressed: () {
                         Navigator.pop(context);

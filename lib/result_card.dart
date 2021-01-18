@@ -32,8 +32,7 @@ class ResultCard extends StatelessWidget {
                   flex: 5,
                   child: Card(
                     elevation: 50,
-                    shadowColor: Colors.black,
-                    color: Colors.white70,
+                    shadowColor: Theme.of(context).primaryColorDark,
                     semanticContainer: true,
                     clipBehavior: Clip.antiAliasWithSaveLayer,
                     child: SizedBox(
@@ -60,11 +59,7 @@ class ResultCard extends StatelessWidget {
                               child: RichText(
                                 text: TextSpan(
                                   text: data['original_title'],
-                                  style: TextStyle(
-                                    fontSize: 25,
-                                    color: Colors.black54,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                  style: Theme.of(context).textTheme.subtitle1,
                                 ),
                               ),
                             ),
@@ -76,10 +71,7 @@ class ResultCard extends StatelessWidget {
                               child: RichText(
                                 text: TextSpan(
                                   text: 'By: ${data["authors"]}',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black54,
-                                  ),
+                                  style: Theme.of(context).textTheme.subtitle2,
                                 ),
                               ),
                             ),
@@ -91,9 +83,7 @@ class ResultCard extends StatelessWidget {
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: IconTheme(
-                                    data: IconThemeData(
-                                      color: Colors.amber,
-                                    ),
+                                    data: Theme.of(context).iconTheme,
                                     child: StarDisplay(
                                         value: data["average_rating_rounded"]),
                                   ),
@@ -116,12 +106,8 @@ class ResultCard extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
                               child: Text(
-                                'Pub: ${data["original_publication_year"]}',
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                  color: Colors.black54,
-                                ),
-                              ),
+                                  'Pub: ${data["original_publication_year"]}',
+                                  style: Theme.of(context).textTheme.subtitle2),
                             ),
                           )
                         ],
