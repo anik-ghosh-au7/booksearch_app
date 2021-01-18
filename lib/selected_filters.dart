@@ -147,15 +147,12 @@ class _SelectedFiltersState extends State<SelectedFilters> {
         values.remove(filter['value']);
         activeWidgets['author-filter'].setValue(values);
         activeWidgets['author-filter'].triggerCustomQuery();
-        // widget.callback('author-data', values);
       } else if (filter['key'] == 'ratings-filter') {
         activeWidgets['ratings-filter'].setValue({});
         activeWidgets['ratings-filter'].triggerCustomQuery();
-        // widget.callback(filter['ratings-data'], {});
       } else if (filter['key'] == 'publication-year-filter') {
         activeWidgets['publication-year-filter'].setValue({});
         activeWidgets['publication-year-filter'].triggerCustomQuery();
-        // widget.callback(filter['publication-year-data'], {});
       }
     });
     setState(() {
@@ -166,7 +163,6 @@ class _SelectedFiltersState extends State<SelectedFilters> {
   @override
   Widget build(BuildContext context) {
     this.setSelectedFilters();
-    print(SearchBaseProvider.of(context).getActiveWidgets());
     return Visibility(
       visible: selectedFilters.length > 0,
       child: Container(

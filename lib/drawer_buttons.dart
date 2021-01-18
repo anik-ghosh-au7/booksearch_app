@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_searchbox/flutter_searchbox.dart';
 
-class DrawerButtons extends StatelessWidget {
-  final Map<dynamic, dynamic> searchWidgetState;
-  DrawerButtons(this.searchWidgetState);
+class DrawerButtons extends StatefulWidget {
+  @override
+  _DrawerButtonsState createState() => _DrawerButtonsState();
+}
 
+class _DrawerButtonsState extends State<DrawerButtons> {
+  Map<dynamic, dynamic> searchWidgetState;
   @override
   Widget build(BuildContext context) {
+    searchWidgetState = SearchBaseProvider.of(context).getActiveWidgets();
     return Align(
       alignment: FractionalOffset.bottomCenter,
       child: Container(

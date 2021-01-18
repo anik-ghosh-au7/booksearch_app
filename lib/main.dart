@@ -66,11 +66,6 @@ class _HomePageState extends State<HomePage> {
       'publication-year-filter': false,
       'publication-year-data': {},
     };
-    searchWidgetState = {
-      'author-filter': SearchWidget,
-      'ratings-filter': SearchWidget,
-      'publication-year-filter': SearchWidget,
-    };
   }
 
   void setPanelState(id, value) {
@@ -138,19 +133,8 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void setSearchWidgetState(activeWidgets) {
-    setState(() {
-      searchWidgetState['author-filter'] = activeWidgets['author-filter'];
-      searchWidgetState['ratings-filter'] = activeWidgets['ratings-filter'];
-      searchWidgetState['publication-year-filter'] =
-          activeWidgets['publication-year-filter'];
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    activeWidgets = SearchBaseProvider.of(context).getActiveWidgets();
-    setSearchWidgetState(activeWidgets);
     return MaterialApp(
       title: 'SearchBox Demo',
       theme: ThemeData(
@@ -234,7 +218,6 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
-                    // SelectedFilters(activeWidgets, setPanelState),
                     Container(
                       height: panelState['author-filter'] ? 350 : 60,
                       child: SearchWidgetConnector(
@@ -270,22 +253,15 @@ class _HomePageState extends State<HomePage> {
                         id: 'publication-year-filter',
                         type: QueryType.range,
                         dataField: "original_publication_year",
-                        // Initialize with default value
                         value: Map<String, String>(),
                         builder: (context, searchWidget) {
-                          // Call searchWidget's query at first time
-                          // if (searchWidget.query == null) {
-                          //   searchWidget.triggerDefaultQuery();
-                          // }
                           return PublicationYearFilter(
                               searchWidget,
                               setPanelState,
                               panelState['publication-year-filter'],
                               panelState['publication-year-data']);
                         },
-                        // Avoid fetching query for each open/close action instead call it manually
                         triggerQueryOnInit: false,
-                        // Do not remove the search widget's instance after unmount
                         destroyOnDispose: false,
                       ),
                     ),
@@ -295,22 +271,15 @@ class _HomePageState extends State<HomePage> {
                         id: 'ratings-filter',
                         type: QueryType.range,
                         dataField: "average_rating",
-                        // Initialize with default value
                         value: Map<String, String>(),
                         builder: (context, searchWidget) {
-                          // Call searchWidget's query at first time
-                          // if (searchWidget.query == null) {
-                          //   searchWidget.triggerDefaultQuery();
-                          // }
                           return RatingsFilter(
                               searchWidget,
                               setPanelState,
                               panelState['ratings-filter'],
                               panelState['ratings-data']);
                         },
-                        // Avoid fetching query for each open/close action instead call it manually
                         triggerQueryOnInit: false,
-                        // Do not remove the search widget's instance after unmount
                         destroyOnDispose: false,
                       ),
                     ),
@@ -318,7 +287,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               Container(
-                child: DrawerButtons(searchWidgetState),
+                child: DrawerButtons(),
               ),
             ],
           ),
