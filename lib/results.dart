@@ -52,6 +52,23 @@ class ResultsWidget extends StatelessWidget {
                           height: 200,
                           child: GestureDetector(
                             onTap: () {
+                              String objectId;
+                              if (searchWidget.results.data[index] != null &&
+                                  searchWidget.results.data[index]['_id']
+                                      is String) {
+                                objectId =
+                                    searchWidget.results.data[index]['_id'];
+                              }
+                              if (objectId != null &&
+                                  searchWidget.results.data[index]
+                                          ['_click_id'] !=
+                                      null) {
+                                // Record click analytics
+                                searchWidget.recordClick({
+                                  objectId: searchWidget.results.data[index]
+                                      ['_click_id']
+                                }, isSuggestionClick: true);
+                              }
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
